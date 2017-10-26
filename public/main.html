@@ -131,7 +131,7 @@
       },
       created:function(){
         var vm = this;
-        $.getJSON('http://127.0.0.1:3002/clazz/findAll',function(data){
+        $.getJSON('/clazz/findAll',function(data){
           vm.clazzInfo = data;
         });
       },
@@ -144,9 +144,9 @@
         handleSubmit:function(){
           this.dialogFormVisible = false;
           var vm = this;
-          var url = 'http://127.0.0.1:3002/clazz/update';
+          var url = '/clazz/update';
           if(!vm.form.id){
-            url = 'http://127.0.0.1:3002/clazz/save'
+            url = '/clazz/save'
           }
           
           $.post(url,this.form,function(data){
@@ -155,7 +155,7 @@
                   type: 'success',
                   message: '操作成功!'
               });
-              var url ='http://127.0.0.1:3002/clazz/findAll';
+              var url ='/clazz/findAll';
               $.getJSON(url,function(data){
                 vm.clazzInfo = data;
               });
@@ -169,7 +169,7 @@
             type: 'warning'
           }).then(() => {
             var vm = this;
-            var url = 'http://127.0.0.1:3002/clazz/batchDelete'
+            var url = '/clazz/batchDelete'
             $.post(url,{
               ids:JSON.stringify([row.id])
             },function(data){
@@ -181,7 +181,7 @@
               }
             });
             //刷新studentInfo
-            var url ='http://127.0.0.1:3002/clazz/findAll';
+            var url ='/clazz/findAll';
             var vm = this;
             $.getJSON(url,function(data){
               vm.clazzInfo = data;
@@ -307,10 +307,10 @@
         handleSubmit:function(){
           this.dialogFormVisible = false;
           var vm = this;
-          var url = 'http://127.0.0.1:3002/student/update';
+          var url = '/student/update';
 
           if(!vm.form.id){
-            url = 'http://127.0.0.1:3002/student/save'
+            url = '/student/save'
           }
           
           $.post(url,this.form,function(data){
@@ -320,7 +320,7 @@
                   message: '操作成功!'
               });
 
-              var url ='http://127.0.0.1:3002/student/findAll';
+              var url ='/student/findAll';
               $.getJSON(url,function(data){
                 vm.studentInfo = data;
               });
@@ -335,7 +335,7 @@
             type: 'warning'
           }).then(() => {
             var vm = this;
-            var url = 'http://127.0.0.1:3002/student/batchDelete'
+            var url = '/student/batchDelete'
             $.post(url,{
               ids:JSON.stringify([row.id])
             },function(data){
@@ -347,7 +347,7 @@
               }
             });
             //刷新studentInfo
-            var url ='http://127.0.0.1:3002/student/findAll';
+            var url ='/student/findAll';
             var vm = this;
             $.getJSON(url,function(data){
               vm.studentInfo = data;
@@ -369,12 +369,12 @@
       },
       created:function(){
         //加载学生的数据
-        var url ='http://127.0.0.1:3002/student/findAll';
+        var url ='/student/findAll';
         var vm = this;
         $.getJSON(url,function(data){
           vm.studentInfo = data;
         });
-        $.getJSON('http://127.0.0.1:3002/clazz/findAll',function(data){
+        $.getJSON('/clazz/findAll',function(data){
           vm.classes = data;
         });
 
@@ -465,7 +465,7 @@
         },
         created:function(){
           var vm = this;
-          $.getJSON('http://127.0.0.1:3002/sc/findSelectedCourse',function(data){
+          $.getJSON('/sc/findSelectedCourse',function(data){
             vm.scList = data;
             data.forEach(function(item,index){
               var ss=parseFloat(((+item.sc.grade)/100)*item.c.credit);
@@ -477,14 +477,14 @@
           handleSubmit:function(){
             this.dialogFormVisible = false;
             var vm = this;
-            var url= 'http://127.0.0.1:3002/sc/mark';
+            var url= '/sc/mark';
             $.getJSON(url,{id:this.sc.id,grade:this.sc.grade},function(data){
               if(data.affectedRows>0){
                 vm.$message({
                     type: 'success',
                     message: '操作成功!'
                 });
-                $.getJSON('http://127.0.0.1:3002/sc/findSelectedCourse',function(data){
+                $.getJSON('/sc/findSelectedCourse',function(data){
                   vm.scList = data;
                   data.forEach(function(item,index){
                     var ss=(((+item.sc.grade)/100)*item.c.credit)+"";
@@ -508,7 +508,7 @@
               type: 'warning'
             }).then(() => {
               var vm = this;
-              var url = 'http://127.0.0.1:3002/sc/cancelCourse'
+              var url = '/sc/cancelCourse'
               $.get(url,{
                 studentId:row.s.id,
                 courseId:row.c.id
@@ -522,14 +522,14 @@
               });
 
               //同时去更新选课
-              $.get('http://127.0.0.1:3002/course/findByName',{name:row.c.name},function(data){
+              $.get('/course/findByName',{name:row.c.name},function(data){
                  var chosed = +data[0].chosed;
                  var surplus = +data[0].surplus;
                  var course_name = row.c.name;
-                 $.get('http://127.0.0.1:3002/course/update_delete',{chosed:chosed,surplus:surplus,course_name:course_name},
+                 $.get('/course/update_delete',{chosed:chosed,surplus:surplus,course_name:course_name},
                   function(date){
                       //刷新studentInfo
-                        var url ='http://127.0.0.1:3002/sc/findSelectedCourse';
+                        var url ='/sc/findSelectedCourse';
                         $.getJSON(url,function(data){
                           vm.scList = data;
                           data.forEach(function(item,index){
@@ -548,7 +548,7 @@
           },
           handleIconClick:function(){
             var vm = this;
-            var url ='http://127.0.0.1:3002/sc/query';
+            var url ='/sc/query';
               $.getJSON(url,{keys:this.keywords},function(data){
                 console.log(data);
                 // data.forEach(function(item,index){
@@ -635,7 +635,7 @@
       },
       created:function(){
         var vm = this;
-        $.getJSON('http://127.0.0.1:3002/course/findAll',function(data){
+        $.getJSON('/course/findAll',function(data){
           vm.courseInfo = data;
         });
       },
@@ -648,10 +648,10 @@
         handleSubmit:function(){
           this.dialogFormVisible = false;
           var vm = this;
-          var url = 'http://127.0.0.1:3002/course/update';
+          var url = '/course/update';
 
           if(!vm.form.id){
-            url = 'http://127.0.0.1:3002/course/save'
+            url = '/course/save'
           }
           
           $.post(url,this.form,function(data){
@@ -660,7 +660,7 @@
                   type: 'success',
                   message: '操作成功!'
               });
-              var url ='http://127.0.0.1:3002/course/findAll';
+              var url ='/course/findAll';
               $.getJSON(url,function(data){
                 vm.courseInfo = data;
               });
@@ -674,7 +674,7 @@
             type: 'warning'
           }).then(() => {
             var vm = this;
-            var url = 'http://127.0.0.1:3002/course/batchDelete'
+            var url = '/course/batchDelete'
             $.post(url,{
               ids:JSON.stringify([row.id])
             },function(data){
@@ -686,7 +686,7 @@
               }
             });
             //刷新studentInfo
-            var url ='http://127.0.0.1:3002/course/findAll';
+            var url ='/course/findAll';
             var vm = this;
             $.getJSON(url,function(data){
               vm.courseInfo = data;
@@ -798,7 +798,7 @@
       },
       created:function(){
         var vm = this;
-        $.getJSON('http://127.0.0.1:3002/sc/findSelectedCourse',function(data){
+        $.getJSON('/sc/findSelectedCourse',function(data){
           vm.scList = data;
         });
       },
@@ -806,14 +806,14 @@
         handleSubmit:function(){
           this.dialogFormVisible = false;
           var vm = this;
-          var url= 'http://127.0.0.1:3002/sc/mark';
+          var url= '/sc/mark';
           $.getJSON(url,{id:this.sc.id,grade:this.sc.grade},function(data){
             if(data.affectedRows>0){
               vm.$message({
                   type: 'success',
                   message: '操作成功!'
               });
-              $.getJSON('http://127.0.0.1:3002/sc/findSelectedCourse',function(data){
+              $.getJSON('/sc/findSelectedCourse',function(data){
                 vm.scList = data;
               });
             }
@@ -833,7 +833,7 @@
             type: 'warning'
           }).then(() => {
             var vm = this;
-            var url = 'http://127.0.0.1:3002/sc/cancelCourse'
+            var url = '/sc/cancelCourse'
             $.get(url,{
               studentId:row.s.id,
               courseId:row.c.id
@@ -847,14 +847,14 @@
             });
 
             //同时去更新选课
-            $.get('http://127.0.0.1:3002/course/findByName',{name:row.c.name},function(data){
+            $.get('/course/findByName',{name:row.c.name},function(data){
                var chosed = +data[0].chosed;
                var surplus = +data[0].surplus;
                var course_name = row.c.name;
-               $.get('http://127.0.0.1:3002/course/update_delete',{chosed:chosed,surplus:surplus,course_name:course_name},
+               $.get('/course/update_delete',{chosed:chosed,surplus:surplus,course_name:course_name},
                 function(date){
                     //刷新studentInfo
-                      var url ='http://127.0.0.1:3002/sc/findSelectedCourse';
+                      var url ='/sc/findSelectedCourse';
                       $.getJSON(url,function(data){
                         vm.scList = data;
                       });
@@ -869,7 +869,7 @@
         },
         handleIconClick:function(){
           var vm = this;
-          var url ='http://127.0.0.1:3002/sc/query';
+          var url ='/sc/query';
             $.getJSON(url,{keys:this.keywords},function(data){
               console.log(data);
               // data.forEach(function(item,index){
@@ -931,7 +931,7 @@
         },
         created:function(){
           var vm = this;
-          $.getJSON('http://127.0.0.1:3002/course/findAll',function(data){
+          $.getJSON('/course/findAll',function(data){
             vm.courseInfo = data;
           });
         },
@@ -949,7 +949,7 @@
          handleSubmit:function(){
           this.dialogFormVisible = false;
             console.log(this.form_input.name);
-            $.ajax('http://127.0.0.1:3002/sc/selectCourse',{
+            $.ajax('/sc/selectCourse',{
                 method:"post",
                 data:{
                   studentName:this.form_input.student_name,
@@ -959,7 +959,7 @@
                   course_name:this.form_input.course_name
                 },
                 success:function(data){
-                    $.getJSON('http://127.0.0.1:3002/course/findAll',function(data){
+                    $.getJSON('/course/findAll',function(data){
                       vm.courseInfo = data;
                     });
                 }
