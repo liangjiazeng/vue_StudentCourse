@@ -7,7 +7,7 @@ body{
     }
     .top{
         float:left;width: 85%;height:200px;
-        background-image: url('../../../images/bg1.jpg');
+        background-image: url('../images/download.jpg');
         background-repeat: no-repeat;
         background-size: 100%;
         background-position-y:-200px;
