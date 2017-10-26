@@ -1,0 +1,30 @@
+body{
+      margin:0;
+      padding:0;
+    }
+    .left{
+      float:left;width:15%;background-color: #324157;height: 800px;
+    }
+    .top{
+        float:left;width: 85%;height:200px;
+        background-image: url('../../../images/bg1.jpg');
+        background-repeat: no-repeat;
+        background-size: 100%;
+        background-position-y:-200px;
+     }
+    .top p{margin:100px 450px;color: #fff;font-size: 50px}
+    .leftNav{
+      margin-top:100px;
+      padding: 30px;
+      height: 600px;
+      background: #324157;
+    }
+    .leftNav a {
+      text-decoration: none;
+      font-size: 18px;
+      color:#bfcbd9;
+      border:none;
+    }
+    .content {
+      margin-left: 125px;
+    }

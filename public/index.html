@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Welcome!</title>
+	<script src='js/vue.js'></script>
+	  <script src='js/vue-router.js'></script>
+	  
+	  <script src='js/jquery-3.0.0.min.js'></script>
+	  
+	  <!-- 离线引入element，icon加载不出来 -->
+	  <link rel="stylesheet" href="./css/login.css">
+	  <script src='./js/element-ui.js'></script>
+	  <link rel="stylesheet" href="./css/element-ui.css">
+	  <link rel="stylesheet" href="./css/animate.css">
+	  <!-- 在线引入element -->
+	  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-default/index.css">
+	  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+	  <!--日期格式化库-->
+	  <script src='js/moment.min.js'></script>
+</head>
+<body>	
+<div class="top"><p>智慧校园选课系统</p></div>
+	<div id="app">
+
+	<!-- 登录模块 -->
+	<transition  
+			enter-active-class='animated bounceInLeft' 
+			>
+		<div class="login" v-show="login">
+			<div id="icon"><img src="./images/login_icon_03.png" alt="" width="200px"></div>
+			<el-form ref="form" :model="form" label-width="80px">
+			  <el-form-item label="用户名">
+			    <el-input v-model="form.name" style="width: 200px" placeholder="请输入用户名"></el-input>
+			  </el-form-item>
+			 <el-form-item label="密码">
+			    <el-input v-model="form.password" type="password" style="width: 200px" placeholder="请输入密码"></el-input>
+			  </el-form-item>
+			  <el-form-item>
+			    <el-button type="primary" @click="onSubmit">登录</el-button>
+			    <el-button @click='sb=!sb,login=!login'>注册</el-button>
+			  </el-form-item>
+			</el-form>
+		</div>
+	</transition>
+
+		<!--登录错误提示信息 -->
+		<div class="msg" style="color: #fff">
+			<el-dialog
+			  title="提示"
+			  :visible.sync="dialogVisible"
+			  size="tiny"
+			  :before-close="handleClose">
+			  <span>{{Title}}</span>
+			  <span slot="footer" class="dialog-footer">
+			    <el-button @click="dialogVisible = false">取 消</el-button>
+			    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+			  </span>
+			</el-dialog>
+		</div>
+			
+
+		<!-- 这个是注册模块 -->
+			<transition  
+			enter-active-class='animated bounceInRight' 
+			leave-active-class='animated bounceOutRight'>
+				<div class="register" v-show="sb"  >
+					<el-form ref="form" :model="form" label-width="80px">
+					  <el-form-item label="用户名" style="color: #fff">
+					    <el-input v-model="form.name" placeholder="请输入用户名" style="width: 200px"></el-input>
+					  </el-form-item>
+					  <el-form-item label="密码" style="color: #fff">
+					    <el-input v-model="form.password" type="password" placeholder="请输入密码" style="width: 200px"></el-input>
+					  </el-form-item>
+					  <el-form-item label="密码" style="color: #fff">
+					    <el-input v-model="form.repassword" type="password" placeholder="确认密码" style="width: 200px"></el-input>
+					  </el-form-item>
+					  <el-form-item label='性别' style="color: #fff">
+					  	 <el-radio class="radio" v-model="form.gender" label="男">男</el-radio>
+		  			 	 <el-radio class="radio" v-model="form.gender" label="女">女</el-radio>
+		  			  </el-form-item>
+						 <el-form-item label="所在班级" :label-width='labelWidth' style="color: #fff">
+			              <el-select v-model="form.class_id" placeholder="请选择" style="color: #fff">
+			                <el-option
+			                  v-for="item in classes"
+			                  :key="item.id"
+			                  :label="item.name"
+			                  :value='item.id'>
+			                </el-option>
+			              </el-select>
+			            </el-form-item>
+			            <el-form-item label="生日" :label-width='labelWidth' style="color: #fff">
+			              <el-date-picker
+			                v-model="form.birth"
+			                type="date"
+			                placeholder="选择日期"
+			                :picker-options="pickerOptions0" style="color: #fff">
+			              </el-date-picker>
+			            </el-form-item>
+					  <el-form-item>
+					    <el-button type="primary" @click="toRegister">注册</el-button>
+					    <el-button @click='sb=!sb,login=!login'>取消</el-button>
+					  </el-form-item>
+					</el-form>	
+				</div>	
+			</transition>
+	</div>
+	<script type="text/javascript">
+		new Vue({
+			el:'#app',
+			data:{        
+		        form: {
+		          name: '',
+		          password: '',
+		          repassword: '',
+		          gender: '',
+		          class_id:'',
+		          birth:''
+		          
+		        },
+		        classes:null,
+		        sb:false,
+		        login:true,
+		        dialogVisible:false,
+		        Title:''
+			},
+			methods:{
+				onSubmit:function(){
+					var name = this.form.name;
+					var password = this.form.password;
+					var url = 'http://127.0.0.1:3000/student/login';
+					var vm = this;
+					$.post(url,{name:name,password:password},function(data){
+			            if(data.length>0){
+			                window.location='main.html'; 			             
+			            }else{
+			            	vm.Title ="用户名密码不正确，请重新登录!"
+			            	vm.dialogVisible= true;
+			            }
+		          })
+				},
+				toRegister:function(){
+					var url='http://127.0.0.1:3000/student/save';
+					var vm = this;
+					$.post(url,this.form,function(data){
+						console.log(data);
+
+		            if(data.affectedRows>0){
+		              	vm.Title ="注册成功，请重新登录!"
+			            vm.dialogVisible= true;
+			            vm.login = true;
+			            vm.sb = false;
+		            }else{
+		            	this.Title ="注册失败，请重新注册!"
+			            this.dialogVisible= true;
+		            	alert("注册失败");
+		            }
+		          })
+				}
+
+			},
+			created:function(){
+	        //加载学生的数据
+	        var vm = this;
+	        $.getJSON('http://127.0.0.1:3000/clazz/findAll',function(data){
+	          vm.classes = data;
+	        });
+
+
+	      }
+
+		});
+	</script>
+</body>
+</html>
